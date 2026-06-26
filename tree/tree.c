@@ -18,7 +18,11 @@ node* new_node(size_t value)
 
 void add_node(node* root, size_t value)
 {
-    node* node = new_node(value);
+    add_node_impl(root, new_node(value));
+}
+
+void add_node_impl(node* root, node* node)
+{
     if (!root || !node || root->value == node->value) return;
 
     if (root->value < node->value)
@@ -28,7 +32,7 @@ void add_node(node* root, size_t value)
             root->right = node;
             return;
         }
-        add_node(root->right, node);
+        add_node_impl(root->right, node);
         return;
     }
     if (root->left == NULL)
@@ -36,7 +40,18 @@ void add_node(node* root, size_t value)
         root->left = node;
         return;
     }
-    add_node(root->left, node);
+    add_node_impl(root->left, node);
+}
+
+node* max_node(node* root)
+{
+    if (!root) return NULL;
+
+    while(root->right)
+    {
+        root = root->right;
+    }
+    return root;
 }
 
 node* get_node(node* root, size_t value)
